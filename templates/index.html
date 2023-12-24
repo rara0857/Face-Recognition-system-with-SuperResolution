@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1f24;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 3rem;
+            text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+        }
+    
+        form {
+            max-width: 300px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 11px;
+        }
+    
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    
+        .form-half {
+            width: 50%;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        
+        input[type=file] {
+            display: block;
+            width: 140px;
+            margin-bottom: 20px;
+            border: none;
+            background-color: #f7f7f7;
+            padding: 6.8px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type=text] {
+            width: 100px;
+        }
+        
+        input[type=submit], button[type=submit] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    
+        input[type=submit]:hover, button[type=submit]:hover {
+            background-color: #3e8e41;
+        }
+    
+        .container {
+            max-width: 320px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    
+        .delete-output {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .delete-output button,.delete-button button
+        {
+            background-color: #f44336;
+            width: auto;
+            margin: 0 ;
+        }
+    
+        .delete-output button:hover,.delete-button button:hover {
+            background-color: #d32f2f;
+        }
+    
+        .delete-form {
+            background-color: transparent;
+            box-shadow: none;
+            text-align: center;
+        }
+        .delete-button-container {
+            text-align: center;
+        }
+        
+        .delete-button {
+            display: inline-block;
+            margin: 2px;
+        }
+        
+    </style>
+</head>
+    <body>
+        <div class="container">
+            <h2>點名系統</h2>
+            <form class="upload-form" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+                <label for="file">上傳點名照片:</label>
+                <input type="file" id="file" name="file">
+                <input type="submit" value="Upload">
+            </form>
+            <div class="form-container">
+                <form class="add-form form-half" method="POST" action="{{ url_for('upload_faces') }}" enctype="multipart/form-data">
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="student_id">學號:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+                    <label for="files">上傳學生照片:</label>
+                    <input type="file" id="files" name="files" multiple required>
+                    <input type="submit" value="新增學生至資料庫">
+                </form>
+                <form class="add-form form-half" action="{{ url_for('delete_student') }}" method="POST" enctype="multipart/form-data">
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="student_id">學號:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+                    <div style="height:89px; opacity: 0;"></div>
+                    <input type="submit" value="刪除學生資料">
+                </form>
+            </div>
+            <div class="delete-button-container">
+                <div class="delete-button">
+                    <form class="delete-form" action="{{ url_for('delete_output') }}" method="POST">
+                        <button type="submit">清空過去點名記錄</button>
+                    </form>
+                </div>
+                <div class="delete-button">
+                    <form class="delete-form" action="{{ url_for('delete') }}" method="POST">
+                        <button type="submit">刪除點名照片</button>
+                    </form>
+                </div>
+                <div class="delete-button">
+                    <form class="delete-form" action="{{ url_for('delete_all_students') }}" method="POST">
+                        <button type="submit">清空學生資料庫</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

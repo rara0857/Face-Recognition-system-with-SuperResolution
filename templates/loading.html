@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>loading</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			background-color: #1c1f24;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+		h2 {
+			color: #fff;
+			text-align: center;
+			margin: 0;
+		}
+		#loading-circle {
+			position: relative;
+			top: 0px;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			width: 60px;
+			height: 60px;
+			border: 5px solid transparent;
+			border-top-color: #007bff;
+			border-radius: 50%;
+			animation: spin 1.5s linear infinite;
+		}
+		#dots {
+			color: #fff;
+			font-size: 2em;
+			display: inline-block;
+			margin-left: 0.2em;
+			animation: blink 1s infinite;
+		}
+		@keyframes blink {
+			50% {
+				opacity: 0;
+			}
+		}
+		@keyframes spin {
+			from { transform: rotate(0deg); }
+			to { transform: rotate(360deg); }
+		}
+	</style>
+</head>
+<body>
+	<h2><div id="loading-circle"></div>LOADING<span id="dots">.</span></h2>
+
+	<script>
+		var dots = document.getElementById('dots');
+		var dotCount = 0;
+		setInterval(function() {
+			switch (dotCount % 3) {
+				case 0:
+					dots.innerHTML = '.';
+					break;
+				case 1:
+					dots.innerHTML = '..';
+					break;
+				case 2:
+					dots.innerHTML = '...';
+					break;
+			}
+			dotCount++;
+		}, 1000);
+		var checkCompleted = setInterval(function() {
+			fetch('/check_completed')
+				.then(response => response.text())
+				.then(data => {
+					if (data === 'completed') {
+						window.location.href = '/download';
+						clearInterval(checkCompleted);
+					}
+				})
+		}, 2000);
+	</script>
+	
+</body>
+</html>
