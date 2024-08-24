@@ -1,38 +1,33 @@
 # -*- coding: UTF-8 -*-
 import os
-import glob,shutil
+import glob
+import shutil
 
-for file in glob.glob("dataset/input/*"):
-  os.remove(file)
-  print("Deleted "+ str(file))
+paths_to_clear = [
+    "dataset/input/*",
+    "dataset/low_img/*",
+    "downloads/merged_images/*",
+    "downloads/failed_img/*",
+    "experiments/self_sr_32_128/results/*"
+]
 
-for file in glob.glob("dataset/low_img/*"):
-  os.remove(file)
-  print("Deleted "+ str(file))
+for path in paths_to_clear:
+    for file in glob.glob(path):
+        os.remove(file)
+        print(f"Deleted {file}")
 
-for file in glob.glob("downloads/merged_images/*"):
-  os.remove(file)
-  print("Deleted "+ str(file))
+attendance_file = "attendance.txt"
+if os.path.isfile(attendance_file):
+    os.remove(attendance_file)
+    print(f"Deleted {attendance_file}")
 
-for file in glob.glob("downloads/failed_img/*"):
-  os.remove(file)
-  print("Deleted "+ str(file))
+hq_dir = 'dataset/self_HQ_V_32_128/'
+if os.path.isdir(hq_dir):
+    shutil.rmtree(hq_dir)
+    print(f"Deleted {hq_dir}")
 
-for file in glob.glob("experiments/self_sr_32_128/results/*"):
-  os.remove(file)
-  print("Deleted "+ str(file))
-
-if os.path.isfile("attendance.txt"):
-  os.remove("attendance.txt")
-  print("Deleted attendance.txt")
-
-path = 'dataset/self_HQ_V_32_128/'
-if os.path.isdir(path):
-  shutil.rmtree(path)
-  print("Deleted "+ str(path))
-
-path = 'experiments/'
-for folder in next(os.walk(path))[1]:
-  if folder.find("3090")!=-1:
-    shutil.rmtree(path+folder)
-    print("Deleted "+ str(path+folder))
+experiment_dir = 'experiments/'
+for folder in next(os.walk(experiment_dir))[1]:
+    if "3090" in folder:
+        shutil.rmtree(os.path.join(experiment_dir, folder))
+        print(f"Deleted {os.path.join(experiment_dir, folder)}")
